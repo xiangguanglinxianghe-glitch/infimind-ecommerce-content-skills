@@ -47,6 +47,7 @@ author: 极睿科技（Infimind）
 
 ## 权限、积分与安全边界
 
+- OAuth 获取与刷新：首次连接时由 WorkBuddy 打开浏览器完成 OAuth；access token 到期后由客户端使用 refresh token 自动轮换；授权失效后重新连接。
 - OAuth 绑定用户、空间和 operator，不索要 Token；创建、查询和结果访问均由服务端鉴权。
 - 仅传 HTTPS URL，禁止本地路径、base64、localhost、私网/保留地址或供应商临时 URL。
 - 不得使用无授权参考素材，不得复制原品牌标识、人物身份或未经商品图证实的产品事实。
