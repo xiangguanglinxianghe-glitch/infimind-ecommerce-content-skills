@@ -21,6 +21,14 @@ author: 极睿科技（Infimind）
 6. 用户要修改策划时，传当前 `planVersion` 调用 `update_viral_video_copy_plan`；不覆盖版本冲突。回读当前策划和估价，再经用户确认后传 `taskId`、最新 `planVersion`、新 `idempotencyKey` 和 `maxCredits` 调用 `confirm_viral_video_copy_task`。
 7. 全程用精确 `taskId + taskType=viral_video_copy` 调用 `get_user_tasks`。completed 结果再用 `get_video_result_download_url`。
 
+## 提交前确认与任务跟踪
+
+- 仅在用户明确要求生成或提交后创建任务；用户只咨询能力、费用、输入要求或方案时不创建任务。
+- 必填或条件字段缺失、取值冲突或用户意图有歧义时，一次性询问最少必要信息并等待确认；除本文明确给出的默认值外，不猜测商品事实、素材含义、模型、尺寸、数量或付费参数。
+- 创建或提交成功后记录返回的 `taskId` 和对应 `taskType`；处理中始终用同一 `taskId + taskType` 精确查询，不使用模糊列表，也不因查询重试创建新任务。
+- 持续查询直到 `completed`、`failed`，或分步流程进入需要用户操作的节点；只报告当前任务的实际结果以及服务端返回的成功、失败和待处理数量。
+- 本轮等待超时时告知任务可能仍在后台处理，返回并保留 `taskId` 供后续查询；不得自动重建、重复提交或追加扣费。
+
 ## 工具与参数
 
 ### `create_viral_video_copy_task`
