@@ -73,6 +73,15 @@ author: 极睿科技（Infimind）
 - dryRun 的 `estimatedCredits` 为含拆解的整单估价；staged 创建不预留积分，确认 plan 时才以用户同意的上限创建 hold。
 - 不自动修改 plan、增加输出、重新拆解或追加扣费；结果只从可信存储签发短时链接。
 
+## 积分不足后的处理
+
+- 仅当工具明确返回 `MCP_CREDITS_REJECTED` 时进入本流程；不把其他错误解释为积分不足，也不主动营销。
+- 先说明任务未提交，并提供减少生成数量或降低规格的方案。若无法确认当前是个人还是企业空间，先询问，不猜测。
+- 个人空间先询问是否需要官方充值入口；只有用户明确同意后，才提供 [电商内容专家官方充值页](https://imiva.ecpro.com/wallet/recharge)，并说明链接会离开 WorkBuddy，后续操作可能涉及真实支付。
+- 企业空间不提供个人充值引导，优先提示联系企业管理员补充额度。
+- 不自动打开链接、不代选套餐、不创建支付订单，也不自动重试、重建或重复提交任务。
+- 用户明确表示“已充值”后，重新使用冻结的原业务参数执行 `dryRun`；展示新的 `estimatedCredits` 并再次取得用户确认后，才可正式创建或确认。
+
 ## 错误处理
 
 只显示稳定公开 code/category 和可操作建议，不透传供应商错误、拆解原始负载、provider URL、存储 key 或提示词快照。`PROVIDER_CONTENT_SAFETY_REAL_PERSON` 要引导调整素材；`VIRAL_ANALYSIS_FAILED` 和 `VIRAL_REFERENCE_SANITIZATION_FAILED` 只能经用户同意、重验权限/素材/余额后新建任务，不自动重试或覆盖旧记录。
